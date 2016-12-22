@@ -1,8 +1,10 @@
 package com.summertaker.blog46;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,14 +19,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.summertaker.blog46.blog.BlogAdapterInterface;
+import com.summertaker.blog46.blog.BlogInterface;
 import com.summertaker.blog46.common.DataManager;
 import com.summertaker.blog46.data.Blog;
 import com.summertaker.blog46.data.Article;
-import com.summertaker.blog46.blog.BlogListAdapter;
+import com.summertaker.blog46.blog.BlogAdapter;
 import com.summertaker.blog46.common.BaseApplication;
 import com.summertaker.blog46.common.BaseFragment;
 import com.summertaker.blog46.common.Config;
+import com.summertaker.blog46.parser.Keyakizaka46Parser;
 import com.summertaker.blog46.parser.Nogizaka46Parser;
 import com.summertaker.blog46.util.EndlessScrollListener;
 
@@ -34,11 +37,12 @@ import java.util.Map;
 
 import static com.summertaker.blog46.common.BaseApplication.tag;
 
-public class MainFragment extends BaseFragment implements BlogAdapterInterface {
+public class MainFragment extends BaseFragment implements BlogInterface {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private Context mContext;
+    private Activity mActivity;
     private DataManager mDataManager;
 
     private Blog mBlog;
@@ -46,7 +50,7 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
     private ProgressBar mPbLoading;
 
     private ListView mListView;
-    private BlogListAdapter mAdapter;
+    private BlogAdapter mAdapter;
     private ArrayList<Article> mArticles;
 
     private int mCurrentPage = 1;
@@ -72,9 +76,11 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mContext = container.getContext();
+        mActivity = (Activity) mContext;
 
         mDataManager = new DataManager();
         mBlog = mDataManager.getBlogData(getArguments().getInt(ARG_SECTION_NUMBER));
+        mMaxPage = mBlog.getMaxPage();
 
         mPbLoading = (ProgressBar) rootView.findViewById(R.id.pbLoading);
         mPbLoading.getIndeterminateDrawable().setColorFilter(Config.PROGRESS_BAR_COLOR, PorterDuff.Mode.MULTIPLY);
@@ -82,7 +88,7 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
         mArticles = new ArrayList<>();
 
         mListView = (ListView) rootView.findViewById(R.id.listView);
-        mAdapter = new BlogListAdapter(mContext, mArticles, this);
+        mAdapter = new BlogAdapter(mContext, mArticles, this);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,11 +100,7 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
                 //Log.e(mTag, "onLoadMore().page: " + page + " / " + mMaxPage);
-                if (page > mMaxPage) {
-                    //showLastDataMessage();
-                } else {
-                    loadData();
-                }
+                loadData();
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
         });
@@ -113,28 +115,28 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
             return;
         }
 
-        if (mCurrentPage > mMaxPage) {
-            return;
+        if (mMaxPage > 0) {
+            if (mCurrentPage > mMaxPage) {
+                return;
+            }
         }
 
         mIsLoading = true;
 
         String url = mBlog.getUrl();
-        if (url.contains("keyakizaka46.com")) {
-            return;
-        }
-
         if (mCurrentPage > 1) {
             url += mBlog.getPageParam() + mCurrentPage;
             //mLoLoadingMore.setVisibility(View.VISIBLE);
         }
 
-        StringRequest request = new StringRequest(Request.Method.GET, url,
+        final String blogUrl = url;
+
+        StringRequest request = new StringRequest(Request.Method.GET, blogUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //Log.d(tag, response);
-                        parseData(response);
+                        parseData(blogUrl, response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -155,11 +157,16 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
         BaseApplication.getInstance().addToRequestQueue(request);
     }
 
-    private void parseData(String response) {
-        Nogizaka46Parser nogizaka46Parser = new Nogizaka46Parser();
-
+    private void parseData(String blogUrl, String response) {
         ArrayList<Article> articles = new ArrayList<>();
-        nogizaka46Parser.parseBlogList(response, articles);
+
+        if (blogUrl.contains("blog.nogizaka46.com")) {
+            Nogizaka46Parser nogizaka46Parser = new Nogizaka46Parser();
+            nogizaka46Parser.parseBlogList(response, articles);
+        } else {
+            Keyakizaka46Parser keyakizaka46Parser = new Keyakizaka46Parser();
+            keyakizaka46Parser.parseBlogList(response, articles);
+        }
 
         mArticles.addAll(articles);
 
@@ -183,17 +190,27 @@ public class MainFragment extends BaseFragment implements BlogAdapterInterface {
 
     @Override
     public void onImageClick(int position, String imageUrl) {
-
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(imageUrl));
+            startActivityForResult(intent, 100);
+            mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
     }
 
     @Override
     public void onContentClick(int position) {
-
+        Article article = (Article) mAdapter.getItem(position);
+        String url = article.getUrl();
+        if (url != null && !url.isEmpty()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivityForResult(intent, 100);
+            mActivity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        mActivity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

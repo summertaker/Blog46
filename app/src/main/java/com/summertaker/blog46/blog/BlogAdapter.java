@@ -21,21 +21,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BlogListAdapter extends BaseAdapter {
+public class BlogAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<Article> articles;
-    private BlogAdapterInterface mCallback;
+    private BlogInterface mCallback;
 
     private LinearLayout.LayoutParams mParams;
     private LinearLayout.LayoutParams mParamsNoMargin;
 
-    public BlogListAdapter(Context context, ArrayList<Article> articles, BlogAdapterInterface blogAdapterInterface) {
+    public BlogAdapter(Context context, ArrayList<Article> articles, BlogInterface blogInterface) {
         this.mContext = context;
         this.mLayoutInflater = LayoutInflater.from(context);
         this.articles = articles;
-        this.mCallback = blogAdapterInterface;
+        this.mCallback = blogInterface;
 
         float density = mContext.getResources().getDisplayMetrics().density;
         int height = (int) (272 * density);

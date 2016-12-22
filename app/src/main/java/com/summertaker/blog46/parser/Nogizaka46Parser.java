@@ -197,16 +197,16 @@ public class Nogizaka46Parser extends BaseParser {
             Log.e(tag, title + " / " + url + " / " + thumbnailUrl + " / " + imageUrl);
             */
 
-            Article item = new Article();
-            item.setTitle(title);
-            item.setName(name);
-            item.setDate(date);
-            item.setContent(content);
-            item.setUrl(url);
-            item.setThumbnails(thumbnails);
-            item.setImageUrls(imageUrls);
+            Article article = new Article();
+            article.setTitle(title);
+            article.setName(name);
+            article.setDate(date);
+            article.setContent(content);
+            article.setUrl(url);
+            article.setThumbnails(thumbnails);
+            article.setImageUrls(imageUrls);
 
-            articles.add(item);
+            articles.add(article);
         }
     }
 }

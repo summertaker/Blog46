@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Keyakizaka46Parser extends BaseParser {
 
-    public void parseBlogList(String response, ArrayList<Article> webDataList) {
+    public void parseBlogList(String response, ArrayList<Article> articles) {
         /*
         <article>
             <div class="innerHead">
@@ -55,14 +55,11 @@ public class Keyakizaka46Parser extends BaseParser {
 
         for (Element row : doc.select("article")) {
 
-            String id;
             String title;
             String name;
             String date;
             String content;
             String url;
-            String thumbnailUrl = "";
-            String imageUrl = "";
 
             Element el;
 
@@ -96,12 +93,15 @@ public class Keyakizaka46Parser extends BaseParser {
 
             //Log.e(mTag, "title: " + title);
 
+            ArrayList<String> imageUrls = new ArrayList<>();
+            ArrayList<String> thumbnails = new ArrayList<>();
+
             for (Element img : el.select("img")) {
                 String src = img.attr("src");
                 src = "http://www.keyakizaka46.com" + src;
 
-                thumbnailUrl += src + "*";
-                imageUrl += thumbnailUrl + "*";
+                thumbnails.add(src);
+                imageUrls.add(src);
             }
 
             //Log.e(mTag, title + " " + thumbnailUrl);
@@ -113,7 +113,10 @@ public class Keyakizaka46Parser extends BaseParser {
             article.setContent(content);
             article.setUrl(url);
 
-            webDataList.add(article);
+            article.setThumbnails(thumbnails);
+            article.setImageUrls(imageUrls);
+
+            articles.add(article);
         }
     }
 }
