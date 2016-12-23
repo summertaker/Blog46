@@ -27,18 +27,18 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/loLoadingMore"
+        android:id="@+id/loLoadMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#333333"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="12dp"
+        android:padding="10dp"
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/pbLoadingMore"
+            android:id="@+id/pbLoadMore"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

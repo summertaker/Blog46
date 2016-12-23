@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -48,6 +49,7 @@ public class MainFragment extends BaseFragment implements BlogInterface {
     private Blog mBlog;
 
     private ProgressBar mPbLoading;
+    private LinearLayout mLoLoadMore;
 
     private ListView mListView;
     private BlogAdapter mAdapter;
@@ -85,6 +87,10 @@ public class MainFragment extends BaseFragment implements BlogInterface {
         mPbLoading = (ProgressBar) rootView.findViewById(R.id.pbLoading);
         mPbLoading.getIndeterminateDrawable().setColorFilter(Config.PROGRESS_BAR_COLOR, PorterDuff.Mode.MULTIPLY);
 
+        mLoLoadMore = (LinearLayout) rootView.findViewById(R.id.loLoadMore);
+        ProgressBar pbLoadMore = (ProgressBar) rootView.findViewById(R.id.pbLoadMore);
+        pbLoadMore.getIndeterminateDrawable().setColorFilter(Config.PROGRESS_BAR_COLOR_MORE, PorterDuff.Mode.MULTIPLY);
+
         mArticles = new ArrayList<>();
 
         mListView = (ListView) rootView.findViewById(R.id.listView);
@@ -100,8 +106,12 @@ public class MainFragment extends BaseFragment implements BlogInterface {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
                 //Log.e(mTag, "onLoadMore().page: " + page + " / " + mMaxPage);
-                loadData();
-                return true; // ONLY if more data is actually being loaded; false otherwise.
+                if (mMaxPage == 0 || mCurrentPage <= mMaxPage) {
+                    loadData();
+                    return true; // ONLY if more data is actually being loaded; false otherwise.
+                } else {
+                    return false;
+                }
             }
         });
 
@@ -115,18 +125,12 @@ public class MainFragment extends BaseFragment implements BlogInterface {
             return;
         }
 
-        if (mMaxPage > 0) {
-            if (mCurrentPage > mMaxPage) {
-                return;
-            }
-        }
-
         mIsLoading = true;
 
         String url = mBlog.getUrl();
         if (mCurrentPage > 1) {
             url += mBlog.getPageParam() + mCurrentPage;
-            //mLoLoadingMore.setVisibility(View.VISIBLE);
+            mLoLoadMore.setVisibility(View.VISIBLE);
         }
 
         final String blogUrl = url;
@@ -178,7 +182,7 @@ public class MainFragment extends BaseFragment implements BlogInterface {
             mPbLoading.setVisibility(View.GONE);
             mListView.setVisibility(View.VISIBLE);
         } else {
-            //mLoLoadingMore.setVisibility(View.GONE);
+            mLoLoadMore.setVisibility(View.GONE);
         }
         mAdapter.notifyDataSetChanged();
 
