@@ -6,6 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 public class BaseActivity extends AppCompatActivity {
 
     protected Context mContext;
-    protected String tag = this.getClass().getSimpleName();
+    protected String TAG = this.getClass().getSimpleName();
 }
 

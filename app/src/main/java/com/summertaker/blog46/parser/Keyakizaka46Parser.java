@@ -49,7 +49,7 @@ public class Keyakizaka46Parser extends BaseParser {
         </article>
         */
 
-        //Log.e(mTag, response);
+        //Log.e(TAG, response);
 
         Document doc = Jsoup.parse(response);
 
@@ -91,7 +91,7 @@ public class Keyakizaka46Parser extends BaseParser {
             el = row.select(".box-article").first();
             content = el.text().trim();
 
-            //Log.e(mTag, "title: " + title);
+            //Log.e(TAG, "title: " + title);
 
             ArrayList<String> imageUrls = new ArrayList<>();
             ArrayList<String> thumbnails = new ArrayList<>();
@@ -104,7 +104,7 @@ public class Keyakizaka46Parser extends BaseParser {
                 imageUrls.add(src);
             }
 
-            //Log.e(mTag, title + " " + thumbnailUrl);
+            //Log.e(TAG, title + " " + thumbnailUrl);
 
             Article article = new Article();
             article.setTitle(title);

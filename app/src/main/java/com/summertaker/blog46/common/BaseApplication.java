@@ -9,7 +9,7 @@ import com.android.volley.toolbox.Volley;
 
 public class BaseApplication extends Application {
 
-    public static final String tag = BaseApplication.class.getSimpleName();
+    public static final String TAG = BaseApplication.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
 
@@ -34,13 +34,13 @@ public class BaseApplication extends Application {
     }
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
-        // set the default tag if tag is empty
+        // set the default TAG if TAG is empty
         req.setTag(TextUtils.isEmpty(tag) ? tag : tag);
         getRequestQueue().add(req);
     }
 
     public <T> void addToRequestQueue(Request<T> req) {
-        req.setTag(tag);
+        req.setTag(TAG);
         getRequestQueue().add(req);
     }
 

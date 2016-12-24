@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">46ブログ</string>
+    <string name="action_settings">設定</string>
+    <string name="loading">ローディング&#8230;</string>
+    <string name="no_more_data">データはこれ以上ありません。</string>
+    <string name="nogizaka46">乃木坂46</string>
+    <string name="keyakizaka46">欅坂46</string>
+</resources>

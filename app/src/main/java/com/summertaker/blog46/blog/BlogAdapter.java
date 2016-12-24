@@ -86,7 +86,7 @@ public class BlogAdapter extends BaseAdapter {
             holder.loPicture.setVisibility(View.VISIBLE);
 
             for (int i = 0; i < article.getThumbnails().size(); i++) {
-                //Log.e(mTag, "url[" + i + "]: " + imageArray[i]);
+                //Log.e(TAG, "url[" + i + "]: " + imageArray[i]);
                 final String thumbnailUrl = article.getThumbnails().get(i);
                 if (thumbnailUrl.isEmpty()) {
                     continue;
@@ -103,7 +103,12 @@ public class BlogAdapter extends BaseAdapter {
                 //iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 holder.loPicture.addView(iv);
 
-                Picasso.with(mContext).load(thumbnailUrl).into(iv);
+                int placeholder = R.drawable.placeholder_green;
+                if (thumbnailUrl.contains("nogizaka46")) {
+                    placeholder = R.drawable.placeholder_purple;
+                }
+
+                Picasso.with(mContext).load(thumbnailUrl).placeholder(placeholder).into(iv);
                 /*Picasso.with(mContext).load(url).into(iv, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
@@ -139,7 +144,7 @@ public class BlogAdapter extends BaseAdapter {
 
         // 제목
         String title = article.getTitle();
-        //Log.e(mTag, "title: " + title);
+        //Log.e(TAG, "title: " + title);
         if (title == null || title.isEmpty()) {
             holder.tvTitle.setVisibility(View.GONE);
         } else {
@@ -162,7 +167,7 @@ public class BlogAdapter extends BaseAdapter {
         if (pubDate == null || pubDate.isEmpty()) {
             holder.tvDate.setVisibility(View.GONE);
         } else {
-            //Log.e(mTag, "date: " + date);
+            //Log.e(TAG, "date: " + date);
             holder.tvDate.setVisibility(View.VISIBLE);
 
             Date date = null;

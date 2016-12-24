@@ -57,7 +57,7 @@ public class Nogizaka46Parser extends BaseParser {
         */
 
         //response = Util.getJapaneseString(response, "SHIFT-JIS");
-        //Log.e(tag, response);
+        //Log.e(TAG, response);
 
         Document doc = Jsoup.parse(response);
         Element root = doc.getElementById("sheet");
@@ -72,8 +72,8 @@ public class Nogizaka46Parser extends BaseParser {
             return;
         }
 
-        //Log.e(mTag, "h1s.size(): " + h1s.size());
-        //Log.e(tag, "entrybodys.size(): " + entrybodys.size());
+        //Log.e(TAG, "h1s.size(): " + h1s.size());
+        //Log.e(TAG, "entrybodys.size(): " + entrybodys.size());
 
         for (int i = 0; i < h1s.size(); i++) {
             String id;
@@ -120,7 +120,7 @@ public class Nogizaka46Parser extends BaseParser {
             ArrayList<String> thumbnails = new ArrayList<>();
             //ArrayList<String> duplicates = new ArrayList<>();
             for (Element img : body.select("img")) {
-                //Log.e(mTag, a.html());
+                //Log.e(TAG, a.html());
 
                 String src = img.attr("src");
                 if (src.contains(".gif")) {
@@ -139,7 +139,7 @@ public class Nogizaka46Parser extends BaseParser {
                     continue;
                 }
 
-                //Log.e(tag, src);
+                //Log.e(TAG, src);
                 thumbnails.add(src);
                 //thumbnailUrl += src + "*";
 
@@ -194,7 +194,7 @@ public class Nogizaka46Parser extends BaseParser {
                 imageUrl = imageUrl + "*";
                 imageUrl = imageUrl.replace("**", "");
             }
-            Log.e(tag, title + " / " + url + " / " + thumbnailUrl + " / " + imageUrl);
+            Log.e(TAG, title + " / " + url + " / " + thumbnailUrl + " / " + imageUrl);
             */
 
             Article article = new Article();

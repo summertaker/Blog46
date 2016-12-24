@@ -2,9 +2,9 @@ package com.summertaker.blog46.common;
 
 public class BaseParser {
 
-    public String tag;
+    public String TAG;
 
     public BaseParser() {
-        tag = "== " + this.getClass().getSimpleName();
+        TAG = "== " + this.getClass().getSimpleName();
     }
 }

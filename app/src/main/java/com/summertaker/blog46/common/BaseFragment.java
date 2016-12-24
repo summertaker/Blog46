@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 
 public class BaseFragment extends Fragment {
 
-    protected String mTag;
+    protected String TAG;
     protected Context mContext;
 
     public BaseFragment() {
-        this.mTag = "===== " + this.getClass().getSimpleName();
+        this.TAG = "===== " + this.getClass().getSimpleName();
     }
 }

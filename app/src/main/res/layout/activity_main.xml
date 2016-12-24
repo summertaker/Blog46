@@ -29,6 +29,7 @@
             app:layout_collapseMode="pin"
             app:tabIndicatorColor="@color/tabIndicator"
             app:tabSelectedTextColor="@color/tabSelectedText"
+            app:tabIndicatorHeight="5dp"
             app:tabTextColor="@color/tabText" />
 
     </android.support.design.widget.AppBarLayout>

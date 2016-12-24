@@ -1,5 +1,6 @@
 package com.summertaker.blog46;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,9 +11,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private DataManager mDataManager;
 
-    public MainPagerAdapter(FragmentManager fm) {
+    public MainPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mDataManager = new DataManager();
+        mDataManager = new DataManager(context);
     }
 
     @Override

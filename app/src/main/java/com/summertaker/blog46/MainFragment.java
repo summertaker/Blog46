@@ -20,14 +20,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.summertaker.blog46.blog.BlogInterface;
-import com.summertaker.blog46.common.DataManager;
-import com.summertaker.blog46.data.Blog;
-import com.summertaker.blog46.data.Article;
 import com.summertaker.blog46.blog.BlogAdapter;
+import com.summertaker.blog46.blog.BlogInterface;
 import com.summertaker.blog46.common.BaseApplication;
 import com.summertaker.blog46.common.BaseFragment;
 import com.summertaker.blog46.common.Config;
+import com.summertaker.blog46.common.DataManager;
+import com.summertaker.blog46.data.Article;
+import com.summertaker.blog46.data.Blog;
 import com.summertaker.blog46.parser.Keyakizaka46Parser;
 import com.summertaker.blog46.parser.Nogizaka46Parser;
 import com.summertaker.blog46.util.EndlessScrollListener;
@@ -35,8 +35,6 @@ import com.summertaker.blog46.util.EndlessScrollListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.summertaker.blog46.common.BaseApplication.tag;
 
 public class MainFragment extends BaseFragment implements BlogInterface {
 
@@ -80,7 +78,7 @@ public class MainFragment extends BaseFragment implements BlogInterface {
         mContext = container.getContext();
         mActivity = (Activity) mContext;
 
-        mDataManager = new DataManager();
+        mDataManager = new DataManager(mContext);
         mBlog = mDataManager.getBlogData(getArguments().getInt(ARG_SECTION_NUMBER));
         mMaxPage = mBlog.getMaxPage();
 
@@ -105,7 +103,7 @@ public class MainFragment extends BaseFragment implements BlogInterface {
         mListView.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                //Log.e(mTag, "onLoadMore().page: " + page + " / " + mMaxPage);
+                //Log.e(TAG, "onLoadMore().page: " + page + " / " + mMaxPage);
                 if (mMaxPage == 0 || mCurrentPage <= mMaxPage) {
                     loadData();
                     return true; // ONLY if more data is actually being loaded; false otherwise.
@@ -139,13 +137,13 @@ public class MainFragment extends BaseFragment implements BlogInterface {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Log.d(tag, response);
+                        //Log.d(TAG, response);
                         parseData(blogUrl, response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(tag, "Error: " + error.getMessage());
+                Log.e(TAG, "Error: " + error.getMessage());
             }
         }) {
             @Override
