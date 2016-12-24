@@ -1,5 +1,7 @@
 package com.summertaker.blog46.parser;
 
+import android.util.Log;
+
 import com.summertaker.blog46.data.Article;
 import com.summertaker.blog46.common.BaseParser;
 
@@ -62,8 +64,8 @@ public class Nogizaka46Parser extends BaseParser {
         Document doc = Jsoup.parse(response);
         Element root = doc.getElementById("sheet");
 
-        Elements h1s = root.select("h1");
-        if (h1s == null) {
+        Elements rows = root.select("h1");
+        if (rows == null) {
             return;
         }
 
@@ -72,10 +74,16 @@ public class Nogizaka46Parser extends BaseParser {
             return;
         }
 
-        //Log.e(TAG, "h1s.size(): " + h1s.size());
-        //Log.e(TAG, "entrybodys.size(): " + entrybodys.size());
+        Elements entrybottoms = root.select(".entrybottom");
+        if (entrybottoms == null) {
+            return;
+        }
 
-        for (int i = 0; i < h1s.size(); i++) {
+        //Log.e(TAG, "rows.size(): " + rows.size());
+        //Log.e(TAG, "entrybodys.size(): " + entrybodys.size());
+        //Log.e(TAG, "entrybottom.size(): " + entrybottom.size());
+
+        for (int i = 0; i < rows.size(); i++) {
             String id;
             String title;
             String name;
@@ -85,21 +93,21 @@ public class Nogizaka46Parser extends BaseParser {
             String thumbnailUrl = "";
             String imageUrl = "";
 
+            Element row = rows.get(i);
+
             Element el;
 
-            Element h1 = h1s.get(i);
+            //el = row.select(".yearmonth").first();
+            //if (el == null) {
+            //    continue;
+            //}
+            //date = el.text().replace("/", "-");
+            //date += "-" + row.select(".dd1").first().text();
+            //date += " " + row.select(".dd2").first().text();
 
-            el = h1.select(".yearmonth").first();
-            if (el == null) {
-                continue;
-            }
-            date = el.text().replace("/", "-");
-            date += "-" + h1.select(".dd1").first().text();
-            date += " " + h1.select(".dd2").first().text();
+            name = row.select(".author").first().text();
 
-            name = h1.select(".author").first().text();
-
-            el = h1.select(".entrytitle").first();
+            el = row.select(".entrytitle").first();
             el = el.select("a").first();
             title = el.text();
             url = el.attr("href");
@@ -108,8 +116,12 @@ public class Nogizaka46Parser extends BaseParser {
             //    break;
             //}
             //Element entitybody = entrybodys.get(i);
+            Element entrybottom = entrybottoms.get(i);
+            String text = entrybottom.text();
+            String[] array = text.split("｜");
+            date = array[0].trim();
 
-            el = h1.nextElementSibling();
+            el = row.nextElementSibling();
             Element body = el.nextElementSibling();
             content = body.text().trim();
             content = content.replace("&nbsp;", "");

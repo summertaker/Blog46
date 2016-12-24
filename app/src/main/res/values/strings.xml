@@ -5,4 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="nogizaka46">Nogizaka46</string>
     <string name="keyakizaka46">Keyakizaka46</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="ok">OK</string>
 </resources>

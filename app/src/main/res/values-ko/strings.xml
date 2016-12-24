@@ -6,4 +6,7 @@
     <string name="no_more_data">データはこれ以上ありません。</string>
     <string name="nogizaka46">乃木坂46</string>
     <string name="keyakizaka46">欅坂46</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="ok">OK</string>
 </resources>

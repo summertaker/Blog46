@@ -63,12 +63,12 @@ public class Keyakizaka46Parser extends BaseParser {
 
             Element el;
 
-            Elements times = row.select("time");
-            if (times == null) {
-                continue;
-            }
-            date = times.get(0).text();
-            date += "." + times.get(1).text();
+            //Elements times = row.select("time");
+            //if (times == null) {
+            //    continue;
+            //}
+            //date = times.get(0).text();
+            //date += "." + times.get(1).text();
 
             Element ttl = row.select(".box-ttl").first();
             if (ttl == null) {
@@ -103,6 +103,9 @@ public class Keyakizaka46Parser extends BaseParser {
                 thumbnails.add(src);
                 imageUrls.add(src);
             }
+
+            el = row.select(".box-bottom").first();
+            date = el.select("ul").first().select("li").first().text();
 
             //Log.e(TAG, title + " " + thumbnailUrl);
 

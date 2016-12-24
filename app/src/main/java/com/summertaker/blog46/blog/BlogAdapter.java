@@ -12,11 +12,13 @@ import com.squareup.picasso.Picasso;
 import com.summertaker.blog46.data.Article;
 import com.summertaker.blog46.util.ProportionalImageView;
 import com.summertaker.blog46.R;
+import com.summertaker.blog46.util.Util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +71,8 @@ public class BlogAdapter extends BaseAdapter {
             convertView = mLayoutInflater.inflate(R.layout.blog_list_item, null);
 
             holder.loPicture = (LinearLayout) convertView.findViewById(R.id.loPicture);
+            holder.tvToday = (TextView) convertView.findViewById(R.id.tvToday);
+            holder.tvYesterday = (TextView) convertView.findViewById(R.id.tvYesterday);
             holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             holder.tvDate = (TextView) convertView.findViewById(R.id.tvDate);
@@ -194,6 +198,23 @@ public class BlogAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
             holder.tvDate.setText(pubDate);
+
+            holder.tvToday.setVisibility(View.GONE);
+            holder.tvYesterday.setVisibility(View.GONE);
+            if (date != null) {
+                Date today = new Date();
+                if (Util.isSameDay(today, date)) {
+                    holder.tvToday.setVisibility(View.VISIBLE);
+                }
+
+                Calendar c = Calendar.getInstance();
+                c.setTime(today);
+                c.add(Calendar.DATE, -1);
+                Date yesterday = c.getTime();
+                if (Util.isSameDay(yesterday, date)) {
+                    holder.tvYesterday.setVisibility(View.VISIBLE);
+                }
+            }
         }
 
         // 내용
@@ -227,6 +248,8 @@ public class BlogAdapter extends BaseAdapter {
 
     static class ViewHolder {
         LinearLayout loPicture;
+        TextView tvToday;
+        TextView tvYesterday;
         TextView tvTitle;
         TextView tvName;
         TextView tvDate;
