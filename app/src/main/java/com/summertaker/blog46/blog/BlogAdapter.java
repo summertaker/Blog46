@@ -107,12 +107,12 @@ public class BlogAdapter extends BaseAdapter {
                 //iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 holder.loPicture.addView(iv);
 
-                int placeholder = R.drawable.placeholder_green;
-                if (thumbnailUrl.contains("nogizaka46")) {
-                    placeholder = R.drawable.placeholder_purple;
-                }
+                //int placeholder = R.drawable.placeholder_green;
+                //if (thumbnailUrl.contains("nogizaka46")) {
+                //    placeholder = R.drawable.placeholder_purple;
+                //}
 
-                Picasso.with(mContext).load(thumbnailUrl).placeholder(placeholder).into(iv);
+                Picasso.with(mContext).load(thumbnailUrl).into(iv);
                 /*Picasso.with(mContext).load(url).into(iv, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
