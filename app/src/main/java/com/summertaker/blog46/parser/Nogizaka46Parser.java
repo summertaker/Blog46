@@ -90,8 +90,6 @@ public class Nogizaka46Parser extends BaseParser {
             String date;
             String content;
             String url;
-            String thumbnailUrl = "";
-            String imageUrl = "";
 
             Element row = rows.get(i);
 
@@ -116,10 +114,14 @@ public class Nogizaka46Parser extends BaseParser {
             //    break;
             //}
             //Element entitybody = entrybodys.get(i);
-            Element entrybottom = entrybottoms.get(i);
-            String text = entrybottom.text();
-            String[] array = text.split("｜");
-            date = array[0].trim();
+            if (entrybottoms.size() > i) {
+                Element entrybottom = entrybottoms.get(i);
+                String text = entrybottom.text();
+                String[] array = text.split("｜");
+                date = array[0].trim();
+            } else {
+                date = null;
+            }
 
             el = row.nextElementSibling();
             Element body = el.nextElementSibling();
