@@ -103,9 +103,16 @@ public class Nogizaka46Parser extends BaseParser {
             //date += "-" + row.select(".dd1").first().text();
             //date += " " + row.select(".dd2").first().text();
 
-            name = row.select(".author").first().text();
+            el = row.select(".author").first();
+            if (el == null) {
+                continue;
+            }
+            name = el.text();
 
             el = row.select(".entrytitle").first();
+            if (el == null) {
+                continue;
+            }
             el = el.select("a").first();
             title = el.text();
             url = el.attr("href");

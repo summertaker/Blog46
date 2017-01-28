@@ -5,7 +5,7 @@
     <color name="colorAccent">#43a047</color>
     <color name="tabBackground">#8e24aa</color>
     <color name="tabIndicator">#8e24aa</color>
-    <color name="tabText">#ba68c8</color>
+    <color name="tabText">#bbbbbb</color>
     <color name="tabSelectedText">#ffffff</color>
 
     <!-- Bootstrap Button -->
