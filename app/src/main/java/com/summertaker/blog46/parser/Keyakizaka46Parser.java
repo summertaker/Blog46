@@ -98,7 +98,7 @@ public class Keyakizaka46Parser extends BaseParser {
 
             for (Element img : el.select("img")) {
                 String src = img.attr("src");
-                src = "http://www.keyakizaka46.com" + src;
+                //src = "http://www.keyakizaka46.com" + src;
 
                 thumbnails.add(src);
                 imageUrls.add(src);
