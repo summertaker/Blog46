@@ -87,6 +87,9 @@ public class Keyakizaka46Parser extends BaseParser {
 
             el = ttl.select("p").first();
             name = el.text();
+            if (name.contains("石森 虹花")) {
+                continue;
+            }
 
             el = row.select(".box-article").first();
             content = el.text().trim();
